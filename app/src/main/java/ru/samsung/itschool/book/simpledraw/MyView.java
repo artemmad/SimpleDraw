@@ -13,10 +13,15 @@ public class MyView extends View {
         super(context);
     }
 
-    Paint paint = new Paint ();
-    float x = 0;
-    long lastTime = System.currentTimeMillis();
+    int N = 100;
+    float[] x = new float[N];
+    float[] y = new float[N];
+    float[] vx = new float[N];
+    float[] vy = new float[N];
 
+    Paint paint = new Paint ();
+
+    boolean started;
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -26,10 +31,29 @@ public class MyView extends View {
         //Здесь располагаются команды рисования
         ///...
 
-        canvas.drawCircle(x, 300,20,paint);
-        long nowTime = System.currentTimeMillis();
-        x+=0.001f*(nowTime - lastTime);
-        lastTime=nowTime;
+        for(int i = 0; i<N; i++){
+            canvas.drawCircle(x[i], y[i], 20 ,paint);
+        }//drawing circles on canvas
+
+        for(int i = 0; i<N;i++)
+        {
+            x[i]+= vx[i];
+            y[i]+= vy[i];
+        }
+
+
+        if(!started){
+            for(int i = 0; i<N;i++)
+            {
+                x[i] = (float) (Math.random()*500);
+                y[i] = (float) (Math.random()*500);
+                vx[i] = (float) (Math.random()*6-3);
+                x[i] = (float) (Math.random()*6-3);
+
+            }
+            //заполнение массива
+            started = true;
+        }
 
         invalidate();// Ставим задачу на перерисовку
     }
